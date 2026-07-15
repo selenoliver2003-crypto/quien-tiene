@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¿Quién Tiene? — Inicio</title>
+  <link rel="stylesheet" href="css/main.css">
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <div class="container">
+    <h1>¿Quién Tiene?</h1>
+    <p>La red de cercanía de lo cotidiano.</p>
+
+    <div class="auth-box">
+      <span class="etiqueta-campo">Correo electrónico</span>
+      <input type="email" id="email" placeholder="nombre@ejemplo.com" required>
+
+      <span class="etiqueta-campo">Contraseña</span>
+      <input type="password" id="password" placeholder="••••••••" required>
+
+      <!-- Div para errores del usuario -->
+      <div id="errorMsg" class="error-msg"></div>
+
+      <button class="btn-primary" onclick="login()">Entrar</button>
+      <button class="btn-secondary" onclick="mostrarRegistro()">Crear cuenta...</button>
+
+      <div class="divider">ó</div>
+
+      <button class="btn-google" onclick="loginWithGoogle()">
+        Entrar con Google
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal para selección de rol al registrarse -->
+  <div id="modalRegistro" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); justify-content:center; align-items:center; z-index:100;">
+    <div style="background:white; padding:32px 24px; border-radius:16px; max-width:360px; width:90%; border:1px solid #E4DCC9; box-shadow:0 10px 25px rgba(0,0,0,0.08);">
+      <h3 style="margin-top:0; font-size:1.4rem; text-align:center;">¿Cómo vas a usar la app?</h3>
+      <p style="font-size:0.9rem; color:#7C9A82; text-align:center; margin-bottom:24px;">Selecciona tu perfil principal para continuar.</p>
+      
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <button class="btn-primary" onclick="registrarConRol('buyer')">Buscador (Comprador)</button>
+        <button class="btn-primary" style="background:#FAF6EF; color:#16463C; border:1px solid #16463C;" onclick="registrarConRol('seller')">Negocio (Vendedor)</button>
+        <button class="btn-secondary" style="border:none; color:#C1502E;" onclick="cerrarModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts en el orden de carga correcto para el flujo global -->
+  <script src="js/supabase.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
