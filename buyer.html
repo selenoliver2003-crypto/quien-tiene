@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¿Quién Tiene? — Buscador</title>
+  <link rel="stylesheet" href="css/main.css">
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <div class="pantalla-buyer">
+    
+    <div class="cabecera-buyer">
+      <h1>¿Quién Tiene?</h1>
+      <button class="btn-secondary btn-chico" id="btnLogout">Cerrar Sesión</button>
+    </div>
+
+    <!-- Buscador principal -->
+    <div class="barra-busqueda">
+      <input type="text" id="inputBuscar" placeholder="¿Qué buscas? Ej: Hielo, Empanadas...">
+      <button class="btn-primary" id="btnBuscar">Buscar</button>
+    </div>
+
+    <!-- Espacio para avisos silenciosos sobre el GPS -->
+    <div id="avisoUbicacion" class="aviso"></div>
+
+    <p id="estadoBusqueda" class="estado-busqueda">Escribe lo que necesitas para buscar a tu alrededor.</p>
+
+    <!-- Contenedor donde se cargarán los resultados reales con la distancia -->
+    <div id="panelResultados" class="panel-resultados">
+      <!-- Las tarjetas se generan dinámicamente mediante js/buyer.js -->
+    </div>
+
+  </div>
+
+  <!-- Scripts en orden de ejecución correcto para evitar errores asíncronos -->
+  <script src="js/supabase.js"></script>
+  <script src="js/location.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/buyer.js"></script>
+</body>
+</html>
