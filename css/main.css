@@ -1,0 +1,307 @@
+/* ============================================================
+   "¿Quién Tiene?" — Identidad visual
+   Paleta: mercado local, cálida y directa. Nada de plantilla.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600&display=swap');
+
+:root {
+  --verde-profundo: #16463C;
+  --verde-claro: #7C9A82;
+  --mostaza: #E3A438;
+  --crema: #FAF6EF;
+  --carbon: #262321;
+  --linea: #E4DCC9;
+  --rojo-alerta: #C1502E;
+
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Work Sans', sans-serif;
+  --font-data: 'Space Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--crema);
+  color: var(--carbon);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: var(--verde-profundo);
+}
+
+.container {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.container h1 {
+  font-size: 2.2rem;
+}
+
+.container > p {
+  font-family: var(--font-data);
+  font-size: 0.85rem;
+  color: var(--verde-claro);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 32px;
+}
+
+.auth-box {
+  background: white;
+  border: 1px solid var(--linea);
+  border-radius: 16px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+input {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 14px 16px;
+  border: 1px solid var(--linea);
+  border-radius: 10px;
+  background: var(--crema);
+  color: var(--carbon);
+  outline: none;
+  width: 100%;
+}
+
+input:focus {
+  border-color: var(--verde-profundo);
+  box-shadow: 0 0 0 3px rgba(22, 70, 60, 0.12);
+}
+
+button {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.08s ease, opacity 0.15s ease;
+}
+
+button:active { transform: scale(0.98); }
+
+.btn-primary {
+  background: var(--verde-profundo);
+  color: white;
+}
+
+.btn-primary:hover { opacity: 0.92; }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--verde-profundo);
+  border: 1px solid var(--verde-profundo);
+}
+
+.btn-google {
+  background: white;
+  color: var(--carbon);
+  border: 1px solid var(--linea);
+}
+
+.divider {
+  text-align: center;
+  font-family: var(--font-data);
+  font-size: 0.75rem;
+  color: var(--verde-claro);
+  margin: 4px 0;
+}
+
+.error-msg {
+  font-family: var(--font-data);
+  font-size: 0.8rem;
+  color: var(--rojo-alerta);
+  min-height: 18px;
+}
+
+/* Punto pulsante de "disponible ahora" — elemento distintivo de la app.
+   Cuando un producto está agotado, se apaga con estilo inline (ver seller.js). */
+.pulso-disponible {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--mostaza);
+  box-shadow: 0 0 0 rgba(227, 164, 56, 0.6);
+  animation: pulso 1.8s infinite;
+}
+
+@keyframes pulso {
+  0%   { box-shadow: 0 0 0 0 rgba(227, 164, 56, 0.5); }
+  70%  { box-shadow: 0 0 0 8px rgba(227, 164, 56, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(227, 164, 56, 0); }
+}
+
+/* ============================================================
+   Pantallas compartidas por buyer.html y seller.html
+   ============================================================ */
+
+.pantalla-buyer {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+  min-height: 100vh;
+}
+
+.cabecera-buyer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.cabecera-buyer h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.btn-chico {
+  padding: 8px 14px;
+  font-size: 0.85rem;
+}
+
+.barra-busqueda {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.barra-busqueda input {
+  flex: 1;
+}
+
+.barra-busqueda .btn-primary {
+  flex-shrink: 0;
+  width: auto;
+}
+
+.aviso {
+  font-family: var(--font-data);
+  font-size: 0.78rem;
+  color: var(--rojo-alerta);
+  min-height: 16px;
+  margin: 4px 0;
+}
+
+.aviso-neutral {
+  font-size: 0.85rem;
+  color: var(--carbon);
+  opacity: 0.75;
+  margin: 8px 0 20px;
+}
+
+.estado-busqueda {
+  font-family: var(--font-data);
+  font-size: 0.82rem;
+  color: var(--verde-claro);
+  margin: 4px 0 12px;
+}
+
+.titulo-seccion {
+  margin-top: 24px;
+  font-size: 1.1rem;
+}
+
+.etiqueta-campo {
+  display: block;
+  font-family: var(--font-data);
+  font-size: 0.72rem;
+  color: var(--verde-claro);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 4px;
+}
+
+.panel-resultados {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tarjeta-negocio {
+  background: white;
+  border: 1px solid var(--linea);
+  border-radius: 14px;
+  padding: 16px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tarjeta-negocio:hover {
+  border-color: var(--verde-claro);
+}
+
+.tarjeta-cabeza {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.tarjeta-cabeza h3 {
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.tarjeta-producto {
+  font-family: var(--font-data);
+  font-size: 0.88rem;
+  color: var(--carbon);
+  margin: 6px 0 2px;
+}
+
+.tarjeta-meta {
+  font-size: 0.82rem;
+  color: var(--verde-claro);
+  margin: 0 0 2px;
+}
+
+.tarjeta-acciones {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.tarjeta-acciones button,
+.tarjeta-acciones a {
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Botón grande de "usar mi ubicación" del vendedor: es LA acción
+   clave de su panel, así que se destaca con el color mostaza. */
+.btn-ubicacion {
+  background: var(--mostaza);
+  color: var(--carbon);
+  font-size: 1.05rem;
+}
+
+.btn-ubicacion:hover { opacity: 0.92; }
+
+.btn-ubicacion:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
