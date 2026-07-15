@@ -1,5 +1,5 @@
 // ============================================================
-// Login / Registro con gestión de Roles
+// Autenticación ÚNICA con Google y detección de Roles
 // ============================================================
 
 function mostrarError(msg) {
@@ -7,75 +7,62 @@ function mostrarError(msg) {
   if (el) el.textContent = msg;
 }
 
-async function login() {
-  mostrarError('');
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
-
-  if (!email || !password) {
-    mostrarError('Completa correo y contraseña.');
-    return;
-  }
-
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
-
-  if (error) {
-    mostrarError('No se pudo iniciar sesión: correo o contraseña incorrectos.');
-  } else {
-    checkAuth();
-  }
-}
-
-function mostrarRegistro() {
-  mostrarError('');
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
-
-  if (!email || !password) {
-    mostrarError('Completa correo y contraseña antes de crear la cuenta.');
-    return;
-  }
-  if (password.length < 6) {
-    mostrarError('La contraseña debe tener al menos 6 caracteres.');
-    return;
-  }
-
-  document.getElementById('modalRegistro').style.display = 'flex';
-}
-
-function cerrarModal() {
-  document.getElementById('modalRegistro').style.display = 'none';
-}
-
-async function registrarConRol(rol) {
-  mostrarError('');
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
-
-  const { data, error } = await supabase.auth.signUp({ email, password });
-
-  if (error) {
-    cerrarModal();
-    mostrarError('Error al registrar: ' + error.message);
-    return;
-  }
-
-  if (data.session) {
-    await supabase.from('users').update({ role: rol }).eq('id', data.user.id);
-    cerrarModal();
-    checkAuth();
-  } else {
-    cerrarModal();
-    localStorage.setItem('rolPendiente', rol);
-    alert('Cuenta creada con éxito. Revisa tu correo para confirmar, luego inicia sesión.');
-  }
-}
-
+// Inicia el flujo de Google OAuth
 async function loginWithGoogle() {
-  await supabase.auth.signInWithOAuth({
+  const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
-    options: { redirectTo: window.location.origin }
+    options: { 
+      redirectTo: window.location.origin + window.location.pathname
+    }
   });
+  if (error) mostrarError('Error al conectar con Google: ' + error.message);
+}
+
+// Revisa el estado del usuario logueado con Google
+async function procesarSesionGoogle() {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) return; // Si no hay sesión iniciada, se queda en index.html
+
+  // Buscamos el rol en la tabla 'users'
+  const { data: user, error } = await supabase
+    .from('users')
+    .select('role')
+    .eq('id', session.user.id)
+    .maybeSingle();
+
+  if (error) {
+    console.error('Error al obtener perfil:', error.message);
+    return;
+  }
+
+  // Escenario A: Es un usuario nuevo (o sin rol asignado todavía)
+  if (!user || !user.role) {
+    document.getElementById('modalRegistro').style.display = 'flex';
+  } else {
+    // Escenario B: Ya tiene rol, lo redirigimos directo a su panel
+    window.location.href = user.role === 'buyer' ? 'buyer.html' : 'seller.html';
+  }
+}
+
+// Asigna el rol elegido en el modal y hace la redirección
+async function asignarRolYRedirigir(rol) {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) return;
+
+  // Actualizamos el rol en la base de datos
+  const { error } = await supabase
+    .from('users')
+    .update({ role: rol })
+    .eq('id', session.user.id);
+
+  if (error) {
+    alert('No se pudo guardar tu perfil. Inténtalo de nuevo.');
+    console.error(error);
+    return;
+  }
+
+  // Redirigimos inmediatamente al panel correspondiente
+  window.location.href = rol === 'buyer' ? 'buyer.html' : 'seller.html';
 }
 
 async function logout() {
@@ -83,17 +70,8 @@ async function logout() {
   window.location.href = 'index.html';
 }
 
-// Autoaplicar rol si quedó pendiente por verificación de correo electrónico
-(async function aplicarRolPendienteSiExiste() {
-  const rolPendiente = localStorage.getItem('rolPendiente');
-  if (!rolPendiente) return;
-
-  // Esperar un momento breve para asegurar conexión con Supabase
-  setTimeout(async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (session) {
-      await supabase.from('users').update({ role: rolPendiente }).eq('id', session.user.id);
-      localStorage.removeItem('rolPendiente');
-    }
-  }, 1000);
-})();
+// Ejecución automática al cargar index.html para procesar el retorno de Google
+if (document.getElementById('errorMsg')) {
+  // Le damos un pequeño margen para que cargue Supabase antes de evaluar la sesión
+  setTimeout(procesarSesionGoogle, 500);
+}
