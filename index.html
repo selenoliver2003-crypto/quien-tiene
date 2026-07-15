@@ -14,42 +14,36 @@
     <h1>¿Quién Tiene?</h1>
     <p>La red de cercanía de lo cotidiano.</p>
 
-    <div class="auth-box">
-      <span class="etiqueta-campo">Correo electrónico</span>
-      <input type="email" id="email" placeholder="nombre@ejemplo.com" required>
-
-      <span class="etiqueta-campo">Contraseña</span>
-      <input type="password" id="password" placeholder="••••••••" required>
-
-      <!-- Div para errores del usuario -->
-      <div id="errorMsg" class="error-msg"></div>
-
-      <button class="btn-primary" onclick="login()">Entrar</button>
-      <button class="btn-secondary" onclick="mostrarRegistro()">Crear cuenta...</button>
-
-      <div class="divider">ó</div>
-
-      <button class="btn-google" onclick="loginWithGoogle()">
+    <div class="auth-box" style="text-align: center; gap: 20px; padding: 40px 24px;">
+      <h3 style="margin: 0; font-size: 1.4rem;">¡Bienvenido!</h3>
+      <p style="font-size: 0.9rem; color: var(--verde-claro); margin: 0;">Inicia sesión de forma rápida y segura con tu cuenta de Google para continuar.</p>
+      
+      <!-- Única opción de ingreso -->
+      <button class="btn-primary btn-ubicacion" onclick="loginWithGoogle()" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle;">
+          <path d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.136 4.114-3.555 0-6.437-2.882-6.437-6.437s2.882-6.437 6.437-6.437c1.54 0 2.943.543 4.05 1.44l3.11-3.11C18.99 1.88 15.82 1 12.24 1 6.033 1 1 6.033 1 12.24s5.033 11.24 11.24 11.24c5.895 0 10.865-4.24 10.865-11.24 0-.768-.082-1.343-.22-1.955H12.24z"/>
+        </svg>
         Entrar con Google
       </button>
+
+      <div id="errorMsg" class="error-msg"></div>
     </div>
   </div>
 
-  <!-- Modal para selección de rol al registrarse -->
+  <!-- Modal para selección de rol (Aparecerá automáticamente después de iniciar sesión con Google por primera vez) -->
   <div id="modalRegistro" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); justify-content:center; align-items:center; z-index:100;">
     <div style="background:white; padding:32px 24px; border-radius:16px; max-width:360px; width:90%; border:1px solid #E4DCC9; box-shadow:0 10px 25px rgba(0,0,0,0.08);">
       <h3 style="margin-top:0; font-size:1.4rem; text-align:center;">¿Cómo vas a usar la app?</h3>
-      <p style="font-size:0.9rem; color:#7C9A82; text-align:center; margin-bottom:24px;">Selecciona tu perfil principal para continuar.</p>
+      <p style="font-size:0.9rem; color:#7C9A82; text-align:center; margin-bottom:24px;">Detectamos que es tu primera vez aquí. Elige tu perfil para continuar:</p>
       
       <div style="display:flex; flex-direction:column; gap:12px;">
-        <button class="btn-primary" onclick="registrarConRol('buyer')">Buscador (Comprador)</button>
-        <button class="btn-primary" style="background:#FAF6EF; color:#16463C; border:1px solid #16463C;" onclick="registrarConRol('seller')">Negocio (Vendedor)</button>
-        <button class="btn-secondary" style="border:none; color:#C1502E;" onclick="cerrarModal()">Cancelar</button>
+        <button class="btn-primary" onclick="asignarRolYRedirigir('buyer')">Buscador (Comprador)</button>
+        <button class="btn-primary" style="background:#FAF6EF; color:#16463C; border:1px solid #16463C;" onclick="asignarRolYRedirigir('seller')">Negocio (Vendedor)</button>
       </div>
     </div>
   </div>
 
-  <!-- Scripts en el orden de carga correcto para el flujo global -->
+  <!-- Scripts -->
   <script src="js/supabase.js"></script>
   <script src="js/auth.js"></script>
 </body>
